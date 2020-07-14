@@ -1,0 +1,66 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://src/tileset.tres" type="TileSet" id=1]
+[ext_resource path="res://src/scenes/gameboard/Player.gd" type="Script" id=2]
+[ext_resource path="res://src/scenes/gameboard/GameBoard.gd" type="Script" id=3]
+[ext_resource path="res://src/scenes/gameboard/CameraFocus.gd" type="Script" id=4]
+[ext_resource path="res://assets/debug.png" type="Texture" id=5]
+[ext_resource path="res://assets/player.png" type="Texture" id=6]
+
+[sub_resource type="Animation" id=1]
+resource_name = "hover"
+loop = true
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, -2.5 ) ]
+}
+
+[node name="GameBoard" type="Node2D"]
+script = ExtResource( 3 )
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 16, 16 )
+format = 1
+
+[node name="CameraFocus" type="Position2D" parent="."]
+script = ExtResource( 4 )
+SCROLL_SPEED = 1000
+
+[node name="Camera2D" type="Camera2D" parent="CameraFocus"]
+current = true
+zoom = Vector2( 0.25, 0.25 )
+smoothing_enabled = true
+smoothing_speed = 8.0
+drag_margin_left = 0.0
+drag_margin_top = 0.0
+drag_margin_right = 0.0
+drag_margin_bottom = 0.0
+
+[node name="CameraFocusDebug" type="Sprite" parent="CameraFocus"]
+visible = false
+texture = ExtResource( 5 )
+
+[node name="Enemies" type="Node" parent="."]
+
+[node name="Player" type="Node2D" parent="."]
+z_index = 2
+script = ExtResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="Player"]
+texture = ExtResource( 6 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Player"]
+autoplay = "hover"
+anims/hover = SubResource( 1 )
+
+[node name="TileHighlights" type="Node" parent="."]

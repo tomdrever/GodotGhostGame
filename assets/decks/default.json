@@ -1,0 +1,47 @@
+[
+   {
+      "name":"Knight left",
+      "number":2,
+      "moves":[
+         [-1, 0],
+         [0,-1],
+         [0,-1]
+      ]
+   },
+   {
+      "name":"Knight right",
+      "number":2,
+      "moves":[
+         [1,0],
+         [0,-1],
+         [0,-1]
+      ]
+   },
+   {
+      "name":"Castle straight",
+      "number":6,
+      "moves":[
+         [0,-1],
+         [0,-1],
+         [0,-1]
+      ]
+   },
+   {
+      "name":"Castle left",
+      "number":2,
+      "moves":[
+         [-1,0],
+         [-1,0],
+         [-1,0]
+      ]
+   },
+   {
+      "name":"Castle right",
+      "number":2,
+      "moves":[
+         [1,0],
+         [1,0],
+         [1,0]
+      ]
+   }
+]

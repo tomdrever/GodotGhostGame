@@ -1,0 +1,108 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+_global_script_classes=[ {
+"base": "Reference",
+"class": "Action",
+"language": "GDScript",
+"path": "res://src/Action.gd"
+}, {
+"base": "TextureButton",
+"class": "Card",
+"language": "GDScript",
+"path": "res://src/scenes/deck/card/Card.gd"
+}, {
+"base": "Level",
+"class": "DungeonLevel",
+"language": "GDScript",
+"path": "res://src/DungeonLevel.gd"
+}, {
+"base": "Node2D",
+"class": "GameBoardActor",
+"language": "GDScript",
+"path": "res://src/scenes/gameboard/GameBoardActor.gd"
+}, {
+"base": "Node",
+"class": "Level",
+"language": "GDScript",
+"path": "res://src/Level.gd"
+}, {
+"base": "Action",
+"class": "Movement",
+"language": "GDScript",
+"path": "res://src/Movement.gd"
+} ]
+_global_script_class_icons={
+"Action": "",
+"Card": "",
+"DungeonLevel": "",
+"GameBoardActor": "",
+"Level": "",
+"Movement": ""
+}
+
+[application]
+
+config/name="DreverGameJam"
+run/main_scene="res://src/scenes/GameScene.tscn"
+config/icon="res://icon.png"
+
+[autoload]
+
+TileManager="*res://src/TileManager.gd"
+
+[display]
+
+window/stretch/mode="2d"
+window/stretch/aspect="expand"
+
+[importer_defaults]
+
+texture={
+"compress/bptc_ldr": 0,
+"compress/hdr_mode": 0,
+"compress/lossy_quality": 0.7,
+"compress/mode": 0,
+"compress/normal_map": 0,
+"detect_3d": true,
+"flags/anisotropic": false,
+"flags/filter": false,
+"flags/mipmaps": false,
+"flags/repeat": 0,
+"flags/srgb": 2,
+"process/HDR_as_SRGB": false,
+"process/fix_alpha_border": true,
+"process/invert_color": false,
+"process/premult_alpha": false,
+"size_limit": 0,
+"stream": false,
+"svg/scale": 1.0
+}
+
+[input]
+
+camera_up={
+"deadzone": 0.5,
+"events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":4,"pressed":false,"doubleclick":false,"script":null)
+ ]
+}
+camera_down={
+"deadzone": 0.5,
+"events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":5,"pressed":false,"doubleclick":false,"script":null)
+ ]
+}
+
+[rendering]
+
+quality/intended_usage/framebuffer_allocation=0
+quality/intended_usage/framebuffer_allocation.mobile=0
+quality/2d/use_pixel_snap=true
+environment/default_environment="res://default_env.tres"
+quality/stretch/mode="disabled"
