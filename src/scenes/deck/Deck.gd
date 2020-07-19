@@ -17,7 +17,7 @@ func _ready() -> void:
 	
 	# At the start of the game, add all cards to the draw pile
 	for card in cards:
-		$DrawPile.add_child(card)
+		$DrawPile.add_card(card)
 		
 	# Then draw 5 cards
 	for _i in range(5):
@@ -59,7 +59,7 @@ func on_card_played(card) -> void:
 # Move card from DrawPile to Hand
 func draw_card(card: Card) -> void:
 	# Remove it from DrawPile
-	$DrawPile.remove_child(card)
+	$DrawPile.remove_card(card)
 	
 	# Add it to Hand
 	$SideBar/Hand.add_child(card)
@@ -68,21 +68,21 @@ func draw_card(card: Card) -> void:
 	card.connect("button_up", $SideBar/Hand, "on_card_clicked", [card])
 	
 	# Let Hand listen to it being focused/unfocused
-	card.connect("card_focused", $SideBar/Hand, "on_card_focused", [card])
-	card.connect("card_unfocused", $SideBar/Hand, "on_card_unfocused")
+	card.connect("mouse_entered", $SideBar/Hand, "mouse_entered", [card])
+	card.connect("mouse_exited", $SideBar/Hand, "mouse_exited", [card])
 
 func draw_random_card() -> void:
 	# If no more cards in DrawPile, empty DiscardPile and shuffle the cards into Drawpile
-	if $DrawPile.get_child_count() == 0:
+	if $DrawPile.get_card_count() == 0:
 		print("Shuffling discard pile into draw pile!")
-		var discard_pile_cards = $DiscardPile.get_children()
+		var discard_pile_cards = $DiscardPile.get_cards()
 		discard_pile_cards.shuffle()
 		for card in discard_pile_cards:
-			$DiscardPile.remove_child(card)
-			$DrawPile.add_child(card)
+			$DiscardPile.remove_card(card)
+			$DrawPile.add_card(card)
 	
 	# Get list of cards in DrawPile
-	var draw_pile_cards = $DrawPile.get_children()
+	var draw_pile_cards = $DrawPile.get_cards()
 	
 	# Choose one at random
 	var random_index = randi() % draw_pile_cards.size()
@@ -99,14 +99,14 @@ func discard_card(card: Card) -> void:
 	card.disconnect("button_up", $SideBar/Hand, "on_card_clicked");
 	
 	# TODO - is there a disconnect_all?
-	card.disconnect("card_focused", $SideBar/Hand, "on_card_focused")
-	card.disconnect("card_unfocused", $SideBar/Hand, "on_card_unfocused")
+	card.disconnect("mouse_entered", $SideBar/Hand, "mouse_entered")
+	card.disconnect("mouse_exited", $SideBar/Hand, "mouse_exited")
 	
 	# Add it to DiscardPile
-	$DiscardPile.add_child(card)
+	$DiscardPile.add_card(card)
 
 func update_draw_pile_text() -> void:
-	$SideBar/DrawPileButton.text = str("Draw Pile (", $DrawPile.get_child_count(), ")")
+	$SideBar/DrawPileButton.text = str("Draw Pile (", $DrawPile.get_card_count(), ")")
 
 func update_discard_pile_text() -> void:
-	$SideBar/DiscardPileButton.text = str("Discard Pile (", $DiscardPile.get_child_count(), ")")
+	$SideBar/DiscardPileButton.text = str("Discard Pile (", $DiscardPile.get_card_count(), ")")

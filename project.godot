@@ -9,11 +9,6 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "Reference",
-"class": "Action",
-"language": "GDScript",
-"path": "res://src/Action.gd"
-}, {
 "base": "TextureButton",
 "class": "Card",
 "language": "GDScript",
@@ -33,19 +28,12 @@ _global_script_classes=[ {
 "class": "Level",
 "language": "GDScript",
 "path": "res://src/Level.gd"
-}, {
-"base": "Action",
-"class": "Movement",
-"language": "GDScript",
-"path": "res://src/Movement.gd"
 } ]
 _global_script_class_icons={
-"Action": "",
 "Card": "",
 "DungeonLevel": "",
 "GameBoardActor": "",
-"Level": "",
-"Movement": ""
+"Level": ""
 }
 
 [application]
