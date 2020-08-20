@@ -16,7 +16,7 @@ func on_card_clicked(card) -> void:
 		mouse_exited(card)
 		enabled = false
 	
-func on_card_action_finished() -> void:
+func on_card_action_finished(card) -> void:
 	enabled = true
 
 # When the mouse hovers over a card (focuses on it), make card bigger (moving 

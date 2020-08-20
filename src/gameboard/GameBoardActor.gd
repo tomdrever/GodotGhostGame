@@ -5,8 +5,10 @@ class_name GameBoardActor
 var hearts
 
 signal move_handled
+signal turn_finished
 
 # Handles 
+# - animating its own movement
 # - colliding with something
 # - being collided with
 

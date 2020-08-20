@@ -45,7 +45,7 @@ func _load_deck() -> void:
 				directions.append(Vector2(move[0], move[1]))
 			
 			# Create new card, setup
-			var card = preload("res://src/scenes/deck/card/Card.tscn").instance()
+			var card = preload("res://src/deck/card/Card.tscn").instance()
 			card.setup(card_json["name"], directions)
 			
 			cards.append(card)

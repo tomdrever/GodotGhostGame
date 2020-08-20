@@ -36,8 +36,8 @@ func _setup_starting_positions() -> void:
 	
 	# Add enemies
 	for enemy_pos in level.enemies:
-		var enemy = preload("res://src/scenes/gameboard/Enemy.tscn").instance()
-		enemy.position.x = cell_size.x * enemy_pos.x
+		var enemy = preload("res://src/gameboard/Enemy.tscn").instance()
+		enemy.position.x = cell_size.x * enemy_pos.x - cell_size.x / 2
 		enemy.position.y = (cell_size.y * enemy_pos.y) - cell_size.y / 2
 		
 		enemy.add_to_group("game_board_actors")
@@ -53,6 +53,7 @@ func _setup_starting_positions() -> void:
 	
 	$Player.add_to_group("game_board_actors")
 
+# Highlights a tile by just putting a coloured square sprite over it
 func _highlight_tile(tile: Vector2, highlight: String) -> void:
 	var highlight_sprite = Sprite.new()
 	highlight_sprite.centered = false
@@ -99,12 +100,20 @@ func move(actor: GameBoardActor, direction: Vector2) -> void:
 func highlight_card_action(card) -> void:
 	# Determine card type
 	if card.directions:
+		# Get the player's position, highlight it and use it to start checking each tile in 
+		# that move's directions
 		var player_pos = $TileMap.world_to_map($Player.position)
 		_highlight_tile(player_pos, "highlight_yellow.png")
 		var previous_pos = player_pos
 		
 		for i in range(card.directions.size()):
 			var new_pos = previous_pos + card.directions[i]
+			# Check if path is out of bounds of the game board and if it is stop checking
+			if !Rect2(Vector2(0, 0), level.size).has_point(new_pos):
+				return
+			
+			# Check if obstacle is in path - if yes, highlight red and stop checking
+			# If no, highlight the tile yellow (passable) and keep going
 			if level.obstacles.has(new_pos): 
 				_highlight_tile(new_pos, "highlight_red.png")
 				return

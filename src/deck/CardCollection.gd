@@ -21,11 +21,11 @@ func get_cards():
 func get_card_count():
 	return $GridContainer.get_child_count()
 
-func _input(event):
-	if event.is_action_pressed("ui_cancel"):
-		visible = false
-		get_tree().paused = false
-		
+# TODO - add key shortcuts for each card collection (D and F) which can toggle 
+# their visibility 
+
 func on_toggle():
 	visible = true
-	get_tree().paused = true
+
+func _on_Close_pressed():
+	visible = false

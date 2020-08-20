@@ -12,22 +12,22 @@ _global_script_classes=[ {
 "base": "TextureButton",
 "class": "Card",
 "language": "GDScript",
-"path": "res://src/scenes/deck/card/Card.gd"
+"path": "res://src/deck/card/Card.gd"
 }, {
 "base": "Level",
 "class": "DungeonLevel",
 "language": "GDScript",
-"path": "res://src/DungeonLevel.gd"
+"path": "res://src/levels/DungeonLevel.gd"
 }, {
 "base": "Node2D",
 "class": "GameBoardActor",
 "language": "GDScript",
-"path": "res://src/scenes/gameboard/GameBoardActor.gd"
+"path": "res://src/gameboard/GameBoardActor.gd"
 }, {
 "base": "Node",
 "class": "Level",
 "language": "GDScript",
-"path": "res://src/Level.gd"
+"path": "res://src/levels/Level.gd"
 } ]
 _global_script_class_icons={
 "Card": "",
@@ -39,7 +39,7 @@ _global_script_class_icons={
 [application]
 
 config/name="DreverGameJam"
-run/main_scene="res://src/scenes/GameScene.tscn"
+run/main_scene="res://src/GameScene.tscn"
 config/icon="res://icon.png"
 
 [autoload]
