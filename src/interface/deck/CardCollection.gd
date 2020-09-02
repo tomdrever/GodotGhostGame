@@ -1,6 +1,7 @@
 extends Control
 
-export(String) var title : = "" 
+export(String) var title
+export(String) var toggle_key
 
 signal children_changed
 
@@ -23,6 +24,17 @@ func get_card_count():
 
 # TODO - add key shortcuts for each card collection (D and F) which can toggle 
 # their visibility 
+func _input(event):
+	if event.is_action_pressed(toggle_key):
+		if !visible:
+			var other_collections = get_tree().get_nodes_in_group("card_collections")
+			for collection in other_collections:
+				if collection != self:
+					collection.visible = false
+					
+			visible = true
+		else:
+			visible = false
 
 func on_toggle():
 	visible = true

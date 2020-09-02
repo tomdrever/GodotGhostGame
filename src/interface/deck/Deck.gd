@@ -26,17 +26,7 @@ func _ready() -> void:
 # Loads an array of cards from a json file
 func _load_deck() -> void:
 	# Open deck file
-	var file = File.new()
-	if file.open(deck, File.READ) != 0:
-		print("Error opening file" + str(deck))
-		return
-
-	# Read text
-	var text = file.get_as_text()
-	file.close()
-	
-	# Convert text to json
-	var cards_json = parse_json(text)
+	var cards_json = DataUtils.load_json(deck)
 	for card_json in cards_json:
 		for _i in range(card_json["number"]):
 			# Create Vector2 moves
@@ -45,7 +35,7 @@ func _load_deck() -> void:
 				directions.append(Vector2(move[0], move[1]))
 			
 			# Create new card, setup
-			var card = preload("res://src/deck/card/Card.tscn").instance()
+			var card = preload("res://src/interface/deck/card/Card.tscn").instance()
 			card.setup(card_json["name"], directions)
 			
 			cards.append(card)

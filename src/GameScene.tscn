@@ -1,11 +1,16 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://assets/overhang.png" type="Texture" id=1]
 [ext_resource path="res://assets/background.png" type="Texture" id=2]
 [ext_resource path="res://src/GameScene.gd" type="Script" id=3]
 [ext_resource path="res://src/gameboard/GameBoard.tscn" type="PackedScene" id=4]
-[ext_resource path="res://src/deck/Deck.tscn" type="PackedScene" id=5]
-[ext_resource path="res://src/menu/PauseMenu.tscn" type="PackedScene" id=6]
+[ext_resource path="res://src/interface/deck/Deck.tscn" type="PackedScene" id=5]
+[ext_resource path="res://src/interface/menu/PauseMenu.tscn" type="PackedScene" id=6]
+[ext_resource path="res://src/interface/RouteSelectScreen.tscn" type="PackedScene" id=7]
+[ext_resource path="res://src/interface/EndOfLevelScreen.tscn" type="PackedScene" id=8]
+[ext_resource path="res://assets/ui/dynamicfont_large.tres" type="DynamicFont" id=9]
+[ext_resource path="res://src/interface/EnemyTurnIndicator.gd" type="Script" id=10]
+[ext_resource path="res://src/interface/ParallaxOverhangs.gd" type="Script" id=11]
 
 [node name="GameScene" type="Node2D"]
 script = ExtResource( 3 )
@@ -27,6 +32,7 @@ __meta__ = {
 
 [node name="ParallaxOverhangs" type="ParallaxBackground" parent="."]
 layer = 100
+script = ExtResource( 11 )
 
 [node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxOverhangs"]
 motion_scale = Vector2( 1, 0.25 )
@@ -69,6 +75,23 @@ layer = 101
 [node name="Deck" parent="UserInterface" instance=ExtResource( 5 )]
 size_flags_horizontal = 3
 size_flags_vertical = 3
-deck = "res://assets/decks/default.json"
+deck = "res://assets/data/decks/default.json"
 
 [node name="PauseMenu" parent="UserInterface" instance=ExtResource( 6 )]
+visible = false
+
+[node name="RouteSelectScreen" parent="UserInterface" instance=ExtResource( 7 )]
+
+[node name="EndOfLevelScreen" parent="UserInterface" instance=ExtResource( 8 )]
+visible = false
+
+[node name="EnemyTurnIndicator" type="Label" parent="UserInterface"]
+visible = false
+margin_right = 40.0
+margin_bottom = 14.0
+custom_fonts/font = ExtResource( 9 )
+text = "Enemies taking turn..."
+script = ExtResource( 10 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

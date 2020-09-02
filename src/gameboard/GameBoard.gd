@@ -1,17 +1,17 @@
 extends Node2D
 
+signal board_turn_started
+signal board_turn_ended
+signal level_setup_finished(level_width)
 signal move_completed(success)
 
 var level : Level
 
 func _init() -> void:
-	level = DungeonLevel.new()
+	pass
 
 func _ready() -> void:
-	_generate_floor()
-	level.generate_obstacles()
-	level.generate_enemies()
-	_setup_starting_positions()
+	pass
 	
 func _get_subtile_coord(id):
 	var tiles = $TileMap.tile_set
@@ -35,10 +35,13 @@ func _setup_starting_positions() -> void:
 		$TileMap.update_bitmask_area(obstacle_pos)
 	
 	# Add enemies
-	for enemy_pos in level.enemies:
-		var enemy = preload("res://src/gameboard/Enemy.tscn").instance()
-		enemy.position.x = cell_size.x * enemy_pos.x - cell_size.x / 2
-		enemy.position.y = (cell_size.y * enemy_pos.y) - cell_size.y / 2
+	for enemy_data in level.enemies:
+		var type = enemy_data[0]
+		var pos = enemy_data[1]
+		
+		var enemy = load(type).instance()
+		enemy.position.x = cell_size.x * pos.x - cell_size.x / 2
+		enemy.position.y = (cell_size.y * pos.y) - cell_size.y / 2
 		
 		enemy.add_to_group("game_board_actors")
 		
@@ -61,6 +64,61 @@ func _highlight_tile(tile: Vector2, highlight: String) -> void:
 	highlight_sprite.texture = load("res://assets/map/tiles/" + highlight)
 	highlight_sprite.position = $TileMap.map_to_world(tile)
 	$TileHighlights.add_child(highlight_sprite)
+
+func _sort_by_y(a, b) -> bool:
+	return a.position.y > b.position.y
+
+func on_level_selected(level_str) -> void:
+	level = DungeonLevel.new()
+	
+	_generate_floor()
+	level.generate_obstacles()
+	level.generate_enemies()
+	
+	_setup_starting_positions()
+	
+	emit_signal("level_setup_finished", level.size.x * $TileMap.cell_size.x)
+
+func handle_turn(card) -> void:	
+	emit_signal("board_turn_started")
+	
+	# Remove player control of camera
+	$CameraFocus.input_control = false
+	
+	# Sort the enemies by their Y position - from the bottom (largest) to the 
+	# top (smallest)
+	$Enemies.get_children().sort_custom(self, "_sort_by_y")
+	
+	for enemy in $Enemies.get_children():
+		
+		print(str(enemy) + " taking turn")
+		
+		# Highlight the current enemy
+		_highlight_tile($TileMap.world_to_map(enemy.position), "highlight_red.png")
+		
+		# Move camera to enemy position
+		$CameraFocus.call_deferred("move_to", enemy.position)
+		yield($CameraFocus/Tween, "tween_completed")
+		
+		# TODO - better determining of the enemy's move 
+		var move = enemy.moveset[randi() % enemy.moveset.size()]
+		
+		# Get the board to move bit by bit like normal
+		for direction in move[1]:
+			call_deferred("move", enemy, direction)
+			if !yield(self, "move_completed"):
+				break
+				
+		clear_tile_highlights()
+	
+	# Move camera back tp player
+	$CameraFocus.call_deferred("move_to", $Player.position)
+	yield($CameraFocus/Tween, "tween_completed")
+	
+	# Yield control of camera to player
+	$CameraFocus.input_control = true
+	
+	emit_signal("board_turn_ended")
 
 # Moves a Moveable GameboardActor 1 tile.
 # This could be the player OR an enemy
@@ -96,6 +154,9 @@ func move(actor: GameBoardActor, direction: Vector2) -> void:
 	# Let the CardHandler know that this move is finished, let it do the next part of the 
 	# movement
 	emit_signal("move_completed", true)
+
+func is_actor_at_end(actor: GameBoardActor) -> bool:
+	return $TileMap.world_to_map(actor.position).y == 0
 
 func highlight_card_action(card) -> void:
 	# Determine card type

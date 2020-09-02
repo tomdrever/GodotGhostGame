@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://src/menu/SceneChangeButton.gd" type="Script" id=1]
+[ext_resource path="res://src/interface/menu/SceneChangeButton.gd" type="Script" id=1]
 
 
 [node name="SceneChangeButton" type="Button"]
@@ -9,4 +9,7 @@ margin_bottom = 54.0
 rect_min_size = Vector2( 300, 50 )
 text = "Start game"
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="pressed" from="." to="." method="_on_pressed"]

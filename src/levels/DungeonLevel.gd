@@ -2,8 +2,10 @@ extends Level
 
 class_name DungeonLevel
 
+var basic_enemy = "res://src/gameboard/actors/GhostEnemy.tscn"
+
 func _init() -> void:
-	size = Vector2(9, 30)
+	size = Vector2(7, 24)
 	floor_tile = TileManager.DUNGEON_FLOOR
 
 func generate_obstacles() -> void:
@@ -20,11 +22,10 @@ func generate_obstacles() -> void:
 func generate_enemies() -> void:
 	# Try to put 6 enemies on the board in random positions
 	# If there's an obstacle in the way don't place an enemy there
-	for i in range(6):
+	for i in range(4):
 		var rand_x = randi() % int(size.x)
 		var rand_y = randi() % int(size.y)
-		var new_enemy_pos = Vector2(rand_x, rand_y)
+		var new_enemy_data = [basic_enemy, Vector2(rand_x, rand_y)]
 		
-		if !obstacles.has(new_enemy_pos):
-			print("Putting enemy on tile" + str(new_enemy_pos))
-			enemies.append(new_enemy_pos)
+		if !obstacles.has(new_enemy_data[1]):
+			enemies.append(new_enemy_data)

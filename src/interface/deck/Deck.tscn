@@ -1,9 +1,9 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://src/deck/Hand.gd" type="Script" id=1]
-[ext_resource path="res://src/deck/CardCollection.tscn" type="PackedScene" id=2]
+[ext_resource path="res://src/interface/deck/Hand.gd" type="Script" id=1]
+[ext_resource path="res://src/interface/deck/CardCollection.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/ui/theme.tres" type="Theme" id=3]
-[ext_resource path="res://src/deck/Deck.gd" type="Script" id=4]
+[ext_resource path="res://src/interface/deck/Deck.gd" type="Script" id=4]
 [ext_resource path="res://assets/ui/dynamicfont_regular.tres" type="DynamicFont" id=5]
 
 
@@ -33,6 +33,7 @@ margin_top = 20.0
 margin_right = 112.0
 margin_bottom = 34.0
 rect_min_size = Vector2( 120, 35 )
+hint_tooltip = "Show cards in discard pile (F)"
 size_flags_horizontal = 4
 size_flags_vertical = 0
 custom_fonts/font = ExtResource( 5 )
@@ -58,6 +59,7 @@ margin_top = 545.0
 margin_right = 110.0
 margin_bottom = 580.0
 rect_min_size = Vector2( 120, 35 )
+hint_tooltip = "Show cards in draw pile (D)"
 size_flags_horizontal = 4
 size_flags_vertical = 0
 custom_fonts/font = ExtResource( 5 )
@@ -66,10 +68,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="DiscardPile" parent="." instance=ExtResource( 2 )]
+[node name="DiscardPile" parent="." groups=[
+"card_collections",
+] instance=ExtResource( 2 )]
+visible = false
 title = "Discard Pile"
+toggle_key = "ui_discard_toggle"
 
-[node name="DrawPile" parent="." instance=ExtResource( 2 )]
+[node name="DrawPile" parent="." groups=[
+"card_collections",
+] instance=ExtResource( 2 )]
+visible = false
 title = "Draw Pile"
+toggle_key = "ui_draw_toggle"
 [connection signal="pressed" from="SideBar/DiscardPileButton" to="DiscardPile" method="on_toggle"]
 [connection signal="pressed" from="SideBar/DrawPileButton" to="DrawPile" method="on_toggle"]

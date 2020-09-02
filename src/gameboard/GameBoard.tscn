@@ -1,12 +1,11 @@
 [gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://src/tileset.tres" type="TileSet" id=1]
-[ext_resource path="res://src/gameboard/Player.gd" type="Script" id=2]
+[ext_resource path="res://src/gameboard/actors/Player.gd" type="Script" id=2]
 [ext_resource path="res://src/gameboard/GameBoard.gd" type="Script" id=3]
 [ext_resource path="res://src/gameboard/CameraFocus.gd" type="Script" id=4]
 [ext_resource path="res://assets/debug.png" type="Texture" id=5]
 [ext_resource path="res://assets/player.png" type="Texture" id=6]
-
 
 [sub_resource type="Animation" id=1]
 resource_name = "hover"
@@ -38,7 +37,6 @@ script = ExtResource( 4 )
 SCROLL_SPEED = 1000
 
 [node name="Camera2D" type="Camera2D" parent="CameraFocus"]
-current = true
 zoom = Vector2( 0.25, 0.25 )
 smoothing_enabled = true
 smoothing_speed = 8.0
@@ -50,6 +48,8 @@ drag_margin_bottom = 0.0
 [node name="CameraFocusDebug" type="Sprite" parent="CameraFocus"]
 visible = false
 texture = ExtResource( 5 )
+
+[node name="Tween" type="Tween" parent="CameraFocus"]
 
 [node name="Enemies" type="Node" parent="."]
 
@@ -65,3 +65,5 @@ autoplay = "hover"
 anims/hover = SubResource( 1 )
 
 [node name="TileHighlights" type="Node" parent="."]
+
+[node name="Timer" type="Timer" parent="."]

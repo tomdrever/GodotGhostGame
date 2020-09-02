@@ -12,17 +12,27 @@ _global_script_classes=[ {
 "base": "TextureButton",
 "class": "Card",
 "language": "GDScript",
-"path": "res://src/deck/card/Card.gd"
+"path": "res://src/interface/deck/card/Card.gd"
 }, {
 "base": "Level",
 "class": "DungeonLevel",
 "language": "GDScript",
 "path": "res://src/levels/DungeonLevel.gd"
 }, {
+"base": "GameBoardActor",
+"class": "Enemy",
+"language": "GDScript",
+"path": "res://src/gameboard/actors/Enemy.gd"
+}, {
 "base": "Node2D",
 "class": "GameBoardActor",
 "language": "GDScript",
-"path": "res://src/gameboard/GameBoardActor.gd"
+"path": "res://src/gameboard/actors/GameBoardActor.gd"
+}, {
+"base": "Enemy",
+"class": "GhostEnemy",
+"language": "GDScript",
+"path": "res://src/gameboard/actors/GhostEnemy.gd"
 }, {
 "base": "Node",
 "class": "Level",
@@ -32,19 +42,22 @@ _global_script_classes=[ {
 _global_script_class_icons={
 "Card": "",
 "DungeonLevel": "",
+"Enemy": "",
 "GameBoardActor": "",
+"GhostEnemy": "",
 "Level": ""
 }
 
 [application]
 
-config/name="DreverGameJam"
+config/name="GodotGhostGame"
 run/main_scene="res://src/GameScene.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
 TileManager="*res://src/TileManager.gd"
+DataUtils="*res://src/DataUtils.gd"
 
 [display]
 
@@ -84,6 +97,16 @@ camera_up={
 camera_down={
 "deadzone": 0.5,
 "events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":5,"pressed":false,"doubleclick":false,"script":null)
+ ]
+}
+ui_discard_toggle={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":70,"unicode":0,"echo":false,"script":null)
+ ]
+}
+ui_draw_toggle={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":68,"unicode":0,"echo":false,"script":null)
  ]
 }
 

@@ -1,13 +1,14 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://src/menu/PauseMenu.gd" type="Script" id=1]
-[ext_resource path="res://src/menu/QuitButton.tscn" type="PackedScene" id=2]
+[ext_resource path="res://src/interface/menu/PauseMenu.gd" type="Script" id=1]
+[ext_resource path="res://src/interface/menu/QuitButton.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/ui/theme.tres" type="Theme" id=3]
 [ext_resource path="res://assets/ui/dynamicfont_large.tres" type="DynamicFont" id=4]
+[ext_resource path="res://src/interface/menu/SceneChangeButton.tscn" type="PackedScene" id=5]
+
 
 [node name="PauseMenu" type="Control"]
 pause_mode = 2
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme = ExtResource( 3 )
@@ -53,8 +54,14 @@ margin_bottom = 54.0
 rect_min_size = Vector2( 300, 50 )
 text = "Resume"
 
-[node name="QuitButton" parent="Buttons" instance=ExtResource( 2 )]
+[node name="Restart" parent="Buttons" instance=ExtResource( 5 )]
 margin_top = 58.0
-margin_right = 300.0
 margin_bottom = 112.0
+text = "Restart level"
+scene_to_load = "res://src/GameScene.tscn"
+
+[node name="Quit" parent="Buttons" instance=ExtResource( 2 )]
+margin_top = 116.0
+margin_right = 300.0
+margin_bottom = 170.0
 [connection signal="pressed" from="Buttons/Resume" to="." method="_on_Resume_pressed"]

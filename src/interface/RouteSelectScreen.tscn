@@ -1,0 +1,47 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://assets/ui/dynamicfont_large.tres" type="DynamicFont" id=1]
+[ext_resource path="res://assets/ui/theme.tres" type="Theme" id=2]
+[ext_resource path="res://src/interface/RouteSelectScreen.gd" type="Script" id=3]
+
+
+[node name="RouteSelectScreen" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 2 )
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Background" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.447059, 0.160784, 0.192157, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -64.0
+margin_top = -24.0
+margin_right = 64.0
+margin_bottom = 24.0
+custom_fonts/font = ExtResource( 1 )
+text = "Route select"
+
+[node name="RouteSelect" type="Button" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = 39.7758
+margin_right = 20.0
+margin_bottom = 93.7758
+text = "Go"
+[connection signal="pressed" from="RouteSelect" to="." method="_on_RouteSelect_pressed"]

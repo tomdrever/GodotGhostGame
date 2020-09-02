@@ -1,6 +1,13 @@
 extends GameBoardActor
 
+class_name Enemy
+
+var moveset : = []
+
+signal enemy_move
+
 func _init() -> void:
+	._init()
 	hearts = 1
 
 func on_collision_with(actor: GameBoardActor) -> void:
@@ -9,5 +16,4 @@ func on_collision_with(actor: GameBoardActor) -> void:
 		queue_free()
 		
 func take_turn() -> void:
-	print("Enemy taking turn!")
 	emit_signal("turn_finished")
