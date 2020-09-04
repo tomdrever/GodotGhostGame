@@ -6,7 +6,6 @@
 [ext_resource path="res://src/interface/deck/Deck.gd" type="Script" id=4]
 [ext_resource path="res://assets/ui/dynamicfont_regular.tres" type="DynamicFont" id=5]
 
-
 [node name="Deck" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0

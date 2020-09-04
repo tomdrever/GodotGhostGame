@@ -6,7 +6,7 @@ var enemies = []
 var obstacles = []
 var floor_tile
 var size : Vector2
-# TODO - levels have their own overhang texture 
+# TODO - levels need to store/set background and foreground textures
 
 func generate_obstacles() -> void:
 	pass

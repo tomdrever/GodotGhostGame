@@ -22,8 +22,6 @@ func get_cards():
 func get_card_count():
 	return $GridContainer.get_child_count()
 
-# TODO - add key shortcuts for each card collection (D and F) which can toggle 
-# their visibility 
 func _input(event):
 	if event.is_action_pressed(toggle_key):
 		if !visible:

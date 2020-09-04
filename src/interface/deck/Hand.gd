@@ -2,7 +2,7 @@ extends VBoxContainer
 
 signal card_played(card)
 signal highlight_card_action(card)
-signal remove_highlights
+signal remove_card_action_highlights
 
 var enabled = true
 
@@ -31,7 +31,7 @@ func mouse_entered(card) -> void:
 func mouse_exited(card) -> void:
 	_animate_card_focus(card, card.rect_scale, Vector2(1, 1))
 	if enabled:
-		emit_signal("remove_highlights")
+		emit_signal("remove_card_action_highlights")
 	
 func _animate_card_focus(card, initial, final) -> void:
 	var tween = card.tween

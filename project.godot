@@ -22,22 +22,27 @@ _global_script_classes=[ {
 "base": "GameBoardActor",
 "class": "Enemy",
 "language": "GDScript",
-"path": "res://src/gameboard/actors/Enemy.gd"
+"path": "res://src/game/board/actors/Enemy.gd"
 }, {
 "base": "Node2D",
 "class": "GameBoardActor",
 "language": "GDScript",
-"path": "res://src/gameboard/actors/GameBoardActor.gd"
+"path": "res://src/game/board/actors/GameBoardActor.gd"
 }, {
 "base": "Enemy",
 "class": "GhostEnemy",
 "language": "GDScript",
-"path": "res://src/gameboard/actors/GhostEnemy.gd"
+"path": "res://src/game/board/actors/GhostEnemy.gd"
 }, {
 "base": "Node",
 "class": "Level",
 "language": "GDScript",
 "path": "res://src/levels/Level.gd"
+}, {
+"base": "GameBoardActor",
+"class": "Player",
+"language": "GDScript",
+"path": "res://src/game/board/actors/Player.gd"
 } ]
 _global_script_class_icons={
 "Card": "",
@@ -45,7 +50,8 @@ _global_script_class_icons={
 "Enemy": "",
 "GameBoardActor": "",
 "GhostEnemy": "",
-"Level": ""
+"Level": "",
+"Player": ""
 }
 
 [application]

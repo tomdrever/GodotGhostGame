@@ -4,10 +4,7 @@ class_name Enemy
 
 var moveset : = []
 
-signal enemy_move
-
-func _init() -> void:
-	._init()
+func init() -> void:
 	hearts = 1
 
 func on_collision_with(actor: GameBoardActor) -> void:

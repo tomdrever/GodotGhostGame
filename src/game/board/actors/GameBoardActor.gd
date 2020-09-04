@@ -3,14 +3,17 @@ extends Node2D
 class_name GameBoardActor
 
 var hearts
+var actor_name
+
+var highlighted = false
 
 var move_animation_speed = 0.2
 
 signal move_handled
-signal turn_finished
 
 # Handles 
 # - animating its own movement
+# - showing its tooltip, if it has one
 # - colliding with something
 # - being collided with
 

@@ -2,7 +2,12 @@ extends Node2D
 
 signal board_turn_started
 signal board_turn_ended
+
+signal actor_highlighted(actor)
+signal actor_unhighlighted(actor)
+
 signal level_setup_finished(level_width)
+
 signal move_completed(success)
 
 var level : Level
@@ -13,7 +18,29 @@ func _init() -> void:
 func _ready() -> void:
 	pass
 	
-func _get_subtile_coord(id):
+func _process(delta) -> void:
+	for actor in get_tree().get_nodes_in_group("game_board_actors"):
+		# NOTE - this works but assumes that each actor only takes up 1 tile
+		# Actor's position is the centre of the sprite
+		var actor_rect = Rect2(actor.position - ($TileMap.cell_size / 2), $TileMap.cell_size)
+		
+		var actor_currently_highlighted = actor_rect.has_point(get_global_mouse_position())
+		
+		if actor_currently_highlighted && !actor.highlighted:
+			# Actor has just been highlighted!
+			emit_signal("actor_highlighted", actor)
+			_highlight_tile($TileMap.world_to_map(actor.position), "highlight_red.png", actor.name + "_highlight")
+			
+			actor.highlighted = true
+			
+		elif !actor_currently_highlighted && actor.highlighted:
+			# Actor was highlighted but isn't any more
+			emit_signal("actor_unhighlighted", actor)
+			_clear_tile_highlights(actor.name + "_highlight")
+			
+			actor.highlighted = false
+
+func _get_subtile_coord(id: int):
 	var tiles = $TileMap.tile_set
 	var rect = $TileMap.tile_set.tile_get_region(id)
 	var x = randi() % int(rect.size.x / tiles.autotile_get_size(id).x)
@@ -35,17 +62,21 @@ func _setup_starting_positions() -> void:
 		$TileMap.update_bitmask_area(obstacle_pos)
 	
 	# Add enemies
+	var e_count = 0
 	for enemy_data in level.enemies:
 		var type = enemy_data[0]
 		var pos = enemy_data[1]
 		
 		var enemy = load(type).instance()
+		enemy.init()
+		enemy.name = enemy.actor_name + "_" + str(e_count)
 		enemy.position.x = cell_size.x * pos.x - cell_size.x / 2
 		enemy.position.y = (cell_size.y * pos.y) - cell_size.y / 2
 		
 		enemy.add_to_group("game_board_actors")
 		
 		$Enemies.add_child(enemy)
+		e_count += 1
 	
 	# Set up the camera
 	$CameraFocus.setup(grid_size, cell_size)
@@ -55,21 +86,29 @@ func _setup_starting_positions() -> void:
 	$Player.position.y = grid_size.y - cell_size.y / 2
 	
 	$Player.add_to_group("game_board_actors")
+	$Player.emit_signal("hearts_changed", $Player.hearts)
 
-# Highlights a tile by just putting a coloured square sprite over it
-func _highlight_tile(tile: Vector2, highlight: String) -> void:
+# Highlights a tile by creating a sprite with a given texture on top of that tile
+func _highlight_tile(tile: Vector2, highlight: String, highlight_name: String) -> void:
 	var highlight_sprite = Sprite.new()
+	highlight_sprite.name = highlight_name
 	highlight_sprite.centered = false
 	highlight_sprite.z_index = 1
 	highlight_sprite.texture = load("res://assets/map/tiles/" + highlight)
 	highlight_sprite.position = $TileMap.map_to_world(tile)
 	$TileHighlights.add_child(highlight_sprite)
 
-func _sort_by_y(a, b) -> bool:
+# Deletes all sprites in the TileHighlights node where their name contains a given string
+func _clear_tile_highlights(contains: String) -> void:
+	for highlight_sprite in $TileHighlights.get_children():
+		if contains in highlight_sprite.name:
+			highlight_sprite.queue_free()
+
+func _sort_by_y(a: Node2D, b: Node2D) -> bool:
 	return a.position.y > b.position.y
 
-func on_level_selected(level_str) -> void:
-	level = DungeonLevel.new()
+func on_level_selected(_level: Level) -> void:
+	level = _level
 	
 	_generate_floor()
 	level.generate_obstacles()
@@ -79,7 +118,7 @@ func on_level_selected(level_str) -> void:
 	
 	emit_signal("level_setup_finished", level.size.x * $TileMap.cell_size.x)
 
-func handle_turn(card) -> void:	
+func handle_turn(_card_played: Card) -> void:	
 	emit_signal("board_turn_started")
 	
 	# Remove player control of camera
@@ -91,16 +130,14 @@ func handle_turn(card) -> void:
 	
 	for enemy in $Enemies.get_children():
 		
-		print(str(enemy) + " taking turn")
-		
 		# Highlight the current enemy
-		_highlight_tile($TileMap.world_to_map(enemy.position), "highlight_red.png")
+		_highlight_tile($TileMap.world_to_map(enemy.position), "highlight_red.png", "enemy")
 		
 		# Move camera to enemy position
 		$CameraFocus.call_deferred("move_to", enemy.position)
 		yield($CameraFocus/Tween, "tween_completed")
 		
-		# TODO - better determining of the enemy's move 
+		# TODO - better determining of the enemy's move, this is just random
 		var move = enemy.moveset[randi() % enemy.moveset.size()]
 		
 		# Get the board to move bit by bit like normal
@@ -109,7 +146,7 @@ func handle_turn(card) -> void:
 			if !yield(self, "move_completed"):
 				break
 				
-		clear_tile_highlights()
+		_clear_tile_highlights("enemy")
 	
 	# Move camera back tp player
 	$CameraFocus.call_deferred("move_to", $Player.position)
@@ -156,15 +193,15 @@ func move(actor: GameBoardActor, direction: Vector2) -> void:
 	emit_signal("move_completed", true)
 
 func is_actor_at_end(actor: GameBoardActor) -> bool:
-	return $TileMap.world_to_map(actor.position).y == 0
+	return $TileMap.world_to_map(actor.position).y <= 1
 
-func highlight_card_action(card) -> void:
+func highlight_card_action(card: Card) -> void:
 	# Determine card type
 	if card.directions:
 		# Get the player's position, highlight it and use it to start checking each tile in 
 		# that move's directions
 		var player_pos = $TileMap.world_to_map($Player.position)
-		_highlight_tile(player_pos, "highlight_yellow.png")
+		_highlight_tile(player_pos, "highlight_yellow.png", "card_action_0")
 		var previous_pos = player_pos
 		
 		for i in range(card.directions.size()):
@@ -176,12 +213,11 @@ func highlight_card_action(card) -> void:
 			# Check if obstacle is in path - if yes, highlight red and stop checking
 			# If no, highlight the tile yellow (passable) and keep going
 			if level.obstacles.has(new_pos): 
-				_highlight_tile(new_pos, "highlight_red.png")
+				_highlight_tile(new_pos, "highlight_red.png", "card_action_" + str(i+1))
 				return
 			else:
-				_highlight_tile(new_pos, "highlight_yellow.png")
+				_highlight_tile(new_pos, "highlight_yellow.png", "card_action_" + str(i+1))
 			previous_pos = new_pos
 
-func clear_tile_highlights() -> void:
-	for highlight_sprite in $TileHighlights.get_children():
-		highlight_sprite.queue_free()
+func remove_card_action_highlights() -> void:
+	_clear_tile_highlights("card_action")
