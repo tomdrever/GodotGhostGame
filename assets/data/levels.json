@@ -1,0 +1,53 @@
+[
+	[
+		{
+			"name": "The Dungeon",
+			"class": "res://src/levels/DungeonLevel.gd"
+		}
+	],
+	[
+	
+		{
+			"name": "The Forest",
+			"class": "res://src/levels/DungeonLevel.gd"
+		},
+		{
+			"name": "The Dungeon Depths",
+			"unlock": 1,
+			"class": "res://src/levels/DungeonLevel.gd"
+		}
+	],
+	[
+		{
+			"name": "The Field",
+			"class": "res://src/levels/DungeonLevel.gd"
+		},
+		{
+			"name": "The Abandoned Conservatory",
+			"unlock": 2,
+			"class": "res://src/levels/DungeonLevel.gd"
+		},
+		{
+			"name": "The Town",
+			"unlock": 1,
+			"class": "res://src/levels/DungeonLevel.gd"
+		}
+	],
+	[
+		{
+			"name": "The Wall",
+			"class": "res://src/levels/DungeonLevel.gd"
+		}
+	],
+	[
+		{
+			"name": "The Beyond",
+			"class": "res://src/levels/DungeonLevel.gd"
+		},
+		{
+			"name": "The Hilltop",
+			"unlock": 3,
+			"class": "res://src/levels/DungeonLevel.gd"
+		}
+	]
+]

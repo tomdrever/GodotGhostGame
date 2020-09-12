@@ -68,17 +68,17 @@ __meta__ = {
 }
 
 [node name="DiscardPile" parent="." groups=[
-"card_collections",
+"temp_menus",
 ] instance=ExtResource( 2 )]
 visible = false
-title = "Discard Pile"
 toggle_key = "ui_discard_toggle"
+title = "Discard Pile"
 
 [node name="DrawPile" parent="." groups=[
-"card_collections",
+"temp_menus",
 ] instance=ExtResource( 2 )]
 visible = false
-title = "Draw Pile"
 toggle_key = "ui_draw_toggle"
+title = "Draw Pile"
 [connection signal="pressed" from="SideBar/DiscardPileButton" to="DiscardPile" method="on_toggle"]
 [connection signal="pressed" from="SideBar/DrawPileButton" to="DrawPile" method="on_toggle"]

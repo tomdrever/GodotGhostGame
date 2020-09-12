@@ -3,7 +3,6 @@ extends HBoxContainer
 var heart_texture = preload("res://assets/ui/heart.png")
 
 func hearts_changed(value: int) -> void:
-	print(str(value) + " hearts!")
 	for child in get_children():
 		child.queue_free()
 		

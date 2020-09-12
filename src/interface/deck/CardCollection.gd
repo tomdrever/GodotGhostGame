@@ -1,7 +1,6 @@
-extends Control
+extends TempMenu
 
-export(String) var title
-export(String) var toggle_key
+export (String) var title
 
 signal children_changed
 
@@ -21,21 +20,3 @@ func get_cards():
 
 func get_card_count():
 	return $GridContainer.get_child_count()
-
-func _input(event):
-	if event.is_action_pressed(toggle_key):
-		if !visible:
-			var other_collections = get_tree().get_nodes_in_group("card_collections")
-			for collection in other_collections:
-				if collection != self:
-					collection.visible = false
-					
-			visible = true
-		else:
-			visible = false
-
-func on_toggle():
-	visible = true
-
-func _on_Close_pressed():
-	visible = false

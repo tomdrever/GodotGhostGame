@@ -7,7 +7,9 @@ func _init() -> void:
 
 func _ready() -> void:
 	# Screen / menu signals
-	$UserInterface/RouteSelectScreen.connect("level_selected", $Game/Board, "on_level_selected")
+	$UserInterface/LevelSelectScreen.connect("level_started", $Game/Board, "on_level_started")
+	$UserInterface/LevelSelectScreen.connect("level_started", $UserInterface/MapMenu, "on_level_started")
+	
 	$Game/Board/Player.connect("reached_end", $UserInterface/EndOfLevelScreen, "on_player_reached_end")
 	$Game/Board/Player.connect("reached_end", self, "on_player_reached_end")
 	
@@ -32,6 +34,9 @@ func _ready() -> void:
 	# Game board actor highlight signals
 	$Game/Board.connect("actor_highlighted", $UserInterface/Tooltips, "show")
 	$Game/Board.connect("actor_unhighlighted", $UserInterface/Tooltips, "hide")
+	
+	# Map interfaces
+	$UserInterface/LevelSelectScreen.setup()
 	
 func on_player_reached_end() -> void:
 	$Game/Board.set_process(false)	

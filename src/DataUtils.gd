@@ -1,10 +1,10 @@
 extends Node
 
-func load_json(file_dir) -> String:
+func load_json(file_dir: String) -> Array:
 	var file = File.new()
 	if file.open(file_dir, File.READ) != 0:
 		push_error("Error opening file" + str(file_dir))
-		return ""
+		return []
 
 	# Read text
 	var text = file.get_as_text()

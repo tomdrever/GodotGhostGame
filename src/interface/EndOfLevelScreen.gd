@@ -5,5 +5,6 @@ func _ready():
 	pass # Replace with function body.
 
 func on_player_reached_end() -> void:
-	# TODO - Pause the game board 
+	yield(get_tree().create_timer(1.0), "timeout")
+	
 	visible = true

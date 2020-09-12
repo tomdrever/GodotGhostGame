@@ -107,7 +107,7 @@ func _clear_tile_highlights(contains: String) -> void:
 func _sort_by_y(a: Node2D, b: Node2D) -> bool:
 	return a.position.y > b.position.y
 
-func on_level_selected(_level: Level) -> void:
+func on_level_started(_level: Level) -> void:
 	level = _level
 	
 	_generate_floor()
