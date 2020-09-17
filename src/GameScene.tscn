@@ -1,40 +1,49 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://assets/overhang.png" type="Texture" id=1]
 [ext_resource path="res://assets/background.png" type="Texture" id=2]
 [ext_resource path="res://src/GameScene.gd" type="Script" id=3]
 [ext_resource path="res://src/game/board/GameBoard.tscn" type="PackedScene" id=4]
-[ext_resource path="res://src/interface/deck/Deck.tscn" type="PackedScene" id=5]
+[ext_resource path="res://src/interface/menu/CardCollection.tscn" type="PackedScene" id=5]
 [ext_resource path="res://src/interface/menu/PauseMenu.tscn" type="PackedScene" id=6]
-[ext_resource path="res://src/interface/LevelSelectScreen.tscn" type="PackedScene" id=7]
-[ext_resource path="res://src/interface/EndOfLevelScreen.tscn" type="PackedScene" id=8]
+[ext_resource path="res://src/interface/menu/LevelSelectScreen.tscn" type="PackedScene" id=7]
+[ext_resource path="res://src/interface/menu/EndOfLevelScreen.tscn" type="PackedScene" id=8]
 [ext_resource path="res://assets/ui/dynamicfont_large.tres" type="DynamicFont" id=9]
-[ext_resource path="res://src/interface/EnemyTurnIndicator.gd" type="Script" id=10]
+[ext_resource path="res://src/interface/left/EnemyTurnIndicator.gd" type="Script" id=10]
 [ext_resource path="res://src/game/ParallaxOverhangs.gd" type="Script" id=11]
 [ext_resource path="res://src/interface/Tooltips.gd" type="Script" id=12]
-[ext_resource path="res://src/interface/Hearts.gd" type="Script" id=13]
+[ext_resource path="res://src/interface/left/Hearts.gd" type="Script" id=13]
 [ext_resource path="res://src/interface/menu/MapMenu.tscn" type="PackedScene" id=14]
+[ext_resource path="res://src/Deck.gd" type="Script" id=15]
+[ext_resource path="res://assets/ui/dynamicfont_regular.tres" type="DynamicFont" id=16]
+[ext_resource path="res://src/interface/right/Hand.gd" type="Script" id=17]
+[ext_resource path="res://src/interface/right/Right.gd" type="Script" id=18]
+[ext_resource path="res://src/interface/menu/DiscardPileMenu.gd" type="Script" id=19]
+[ext_resource path="res://src/interface/menu/DrawPileMenu.gd" type="Script" id=20]
 
 [node name="GameScene" type="Node"]
 script = ExtResource( 3 )
 
+[node name="Deck" type="Node" parent="."]
+script = ExtResource( 15 )
+
 [node name="UserInterface" type="CanvasLayer" parent="."]
 layer = 2
 
-[node name="Tooltips" type="Control" parent="UserInterface"]
-script = ExtResource( 12 )
+[node name="Left" type="Control" parent="UserInterface"]
+anchor_bottom = 1.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="LeftBar" type="VBoxContainer" parent="UserInterface"]
+[node name="LeftBar" type="VBoxContainer" parent="UserInterface/Left"]
 anchor_bottom = 1.0
 margin_right = 167.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Hearts" type="HBoxContainer" parent="UserInterface/LeftBar"]
+[node name="Hearts" type="HBoxContainer" parent="UserInterface/Left/LeftBar"]
 margin_right = 167.0
 margin_bottom = 40.0
 rect_min_size = Vector2( 0, 40 )
@@ -43,7 +52,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="EnemyTurnIndicator" type="Label" parent="UserInterface/LeftBar"]
+[node name="EnemyTurnIndicator" type="Label" parent="UserInterface/Left/LeftBar"]
 visible = false
 margin_top = 34.0
 margin_right = 215.0
@@ -55,33 +64,119 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Deck" parent="UserInterface" instance=ExtResource( 5 )]
-size_flags_horizontal = 3
-size_flags_vertical = 3
-deck = "res://assets/data/decks/default.json"
-
-[node name="MapButton" type="Button" parent="UserInterface"]
-margin_left = 103.45
-margin_top = 7.34162
-margin_right = 169.45
-margin_bottom = 27.3416
+[node name="MapButton" type="Button" parent="UserInterface/Left"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 30.0329
+margin_top = -36.7864
+margin_right = 96.0329
+margin_bottom = -16.7864
 text = "Map"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Right" type="Control" parent="UserInterface"]
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -219.0
+script = ExtResource( 18 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="PauseMenu" parent="UserInterface" instance=ExtResource( 6 )]
+[node name="DiscardPileButton" type="Button" parent="UserInterface/Right"]
+margin_left = 57.7427
+margin_top = 20.0
+margin_right = 177.743
+margin_bottom = 59.0
+rect_min_size = Vector2( 120, 35 )
+hint_tooltip = "Show cards in discard pile (F)"
+size_flags_horizontal = 4
+size_flags_vertical = 0
+custom_fonts/font = ExtResource( 16 )
+text = "Discard pile (0)"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Hand" type="VBoxContainer" parent="UserInterface/Right"]
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -219.0
+grow_vertical = 2
+alignment = 1
+script = ExtResource( 17 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DrawPileButton" type="Button" parent="UserInterface/Right"]
+margin_left = 57.7427
+margin_top = 545.0
+margin_right = 177.743
+margin_bottom = 584.0
+rect_min_size = Vector2( 120, 35 )
+hint_tooltip = "Show cards in draw pile (D)"
+size_flags_horizontal = 4
+size_flags_vertical = 0
+custom_fonts/font = ExtResource( 16 )
+text = "Draw pile (0)"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FullScreen" type="Control" parent="UserInterface"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Tooltips" type="Control" parent="UserInterface/FullScreen"]
+script = ExtResource( 12 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Menus" type="Control" parent="UserInterface/FullScreen"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Pause" parent="UserInterface/FullScreen/Menus" instance=ExtResource( 6 )]
 visible = false
 
-[node name="MapMenu" parent="UserInterface" groups=[
+[node name="EndOfLevel" parent="UserInterface/FullScreen/Menus" instance=ExtResource( 8 )]
+visible = false
+
+[node name="LevelSelect" parent="UserInterface/FullScreen/Menus" instance=ExtResource( 7 )]
+
+[node name="Map" parent="UserInterface/FullScreen/Menus" groups=[
 "temp_menus",
 ] instance=ExtResource( 14 )]
 toggle_key = "ui_map_toggle"
 
-[node name="EndOfLevelScreen" parent="UserInterface" instance=ExtResource( 8 )]
+[node name="DiscardPile" parent="UserInterface/FullScreen/Menus" groups=[
+"temp_menus",
+] instance=ExtResource( 5 )]
 visible = false
+script = ExtResource( 19 )
+toggle_key = "ui_discard_toggle"
 
-[node name="LevelSelectScreen" parent="UserInterface" instance=ExtResource( 7 )]
+[node name="DrawPile" parent="UserInterface/FullScreen/Menus" groups=[
+"temp_menus",
+] instance=ExtResource( 5 )]
+visible = false
+script = ExtResource( 20 )
+toggle_key = "ui_draw_toggle"
 
 [node name="Game" type="Node" parent="."]
 
@@ -138,4 +233,6 @@ stretch_mode = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="pressed" from="UserInterface/MapButton" to="UserInterface/MapMenu" method="on_toggle"]
+[connection signal="pressed" from="UserInterface/Left/MapButton" to="UserInterface/FullScreen/Menus/Map" method="on_toggle"]
+[connection signal="pressed" from="UserInterface/Right/DiscardPileButton" to="UserInterface/FullScreen/Menus/DiscardPile" method="on_toggle"]
+[connection signal="pressed" from="UserInterface/Right/DrawPileButton" to="UserInterface/FullScreen/Menus/DrawPile" method="on_toggle"]

@@ -196,28 +196,29 @@ func is_actor_at_end(actor: GameBoardActor) -> bool:
 	return $TileMap.world_to_map(actor.position).y <= 1
 
 func highlight_card_action(card: Card) -> void:
-	# Determine card type
-	if card.directions:
-		# Get the player's position, highlight it and use it to start checking each tile in 
-		# that move's directions
-		var player_pos = $TileMap.world_to_map($Player.position)
-		_highlight_tile(player_pos, "highlight_yellow.png", "card_action_0")
-		var previous_pos = player_pos
+	# TODO - Determine and hadnle card types
+	
+	# Get the player's position, highlight it and use it to start checking each tile in 
+	# that move's directions
+	var player_pos = $TileMap.world_to_map($Player.position)
+	_highlight_tile(player_pos, "highlight_yellow.png", "card_action_0")
+	var previous_pos = player_pos
 		
-		for i in range(card.directions.size()):
-			var new_pos = previous_pos + card.directions[i]
-			# Check if path is out of bounds of the game board and if it is stop checking
-			if !Rect2(Vector2(0, 0), level.size).has_point(new_pos):
-				return
+	for i in range(card.data["moves"].size()):
+		var move = card.data["moves"][i]
+		var new_pos = previous_pos + Vector2(move[0], move[1])
+		# Check if path is out of bounds of the game board and if it is stop checking
+		if !Rect2(Vector2(0, 0), level.size).has_point(new_pos):
+			return
 			
-			# Check if obstacle is in path - if yes, highlight red and stop checking
-			# If no, highlight the tile yellow (passable) and keep going
-			if level.obstacles.has(new_pos): 
-				_highlight_tile(new_pos, "highlight_red.png", "card_action_" + str(i+1))
-				return
-			else:
-				_highlight_tile(new_pos, "highlight_yellow.png", "card_action_" + str(i+1))
-			previous_pos = new_pos
+		# Check if obstacle is in path - if yes, highlight red and stop checking
+		# If no, highlight the tile yellow (passable) and keep going
+		if level.obstacles.has(new_pos): 
+			_highlight_tile(new_pos, "highlight_red.png", "card_action_" + str(i+1))
+			return
+		else:
+			_highlight_tile(new_pos, "highlight_yellow.png", "card_action_" + str(i+1))
+		previous_pos = new_pos
 
 func remove_card_action_highlights() -> void:
 	_clear_tile_highlights("card_action")

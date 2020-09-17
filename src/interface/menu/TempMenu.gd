@@ -12,12 +12,18 @@ func _input(event):
 				if collection != self:
 					collection.visible = false
 					
-			visible = true
+			show_menu()
 		else:
-			visible = false
+			hide_menu()
 
 func on_toggle():
-	visible = true
+	show_menu()
 
 func _on_Close_pressed():
+	hide_menu()
+
+func show_menu():
+	visible = true
+
+func hide_menu():
 	visible = false

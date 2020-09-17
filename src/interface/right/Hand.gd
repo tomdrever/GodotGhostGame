@@ -16,24 +16,38 @@ func on_card_clicked(card) -> void:
 		mouse_exited(card)
 		enabled = false
 	
-func on_card_action_finished(card) -> void:
+func on_card_action_finished(card: Card) -> void:
 	enabled = true
 
-# When the mouse hovers over a card (focuses on it), make card bigger (moving 
-# other cards outwards?) (and signal to the game board to display overlay of 
-# what the movement would be, or whatever the card does)
+func add_card_to_hand(card: Card) -> void:
+	# Let Hand listen to its buttonup signal
+	card.connect("button_up", self, "on_card_clicked", [card])
+
+	# Let Hand listen to it being focused/unfocused
+	card.connect("mouse_entered", self, "mouse_entered", [card])
+	card.connect("mouse_exited", self, "mouse_exited", [card])
 	
-func mouse_entered(card) -> void:
+	add_child(card)
+	
+func remove_card_from_hand(card: Card) -> void:
+	# Clear card signals
+	card.disconnect("button_up", self, "on_card_clicked")
+	card.disconnect("mouse_entered", self, "mouse_entered")
+	card.disconnect("mouse_exited", self, "mouse_exited")
+	
+	remove_child(card)
+	
+func mouse_entered(card: Card) -> void:
 	_animate_card_focus(card, card.rect_scale, Vector2(1.2, 1.2))
 	if enabled:
 		emit_signal("highlight_card_action", card)
 	
-func mouse_exited(card) -> void:
+func mouse_exited(card: Card) -> void:
 	_animate_card_focus(card, card.rect_scale, Vector2(1, 1))
 	if enabled:
 		emit_signal("remove_card_action_highlights")
 	
-func _animate_card_focus(card, initial, final) -> void:
+func _animate_card_focus(card: Card, initial: Vector2, final: Vector2) -> void:
 	var tween = card.tween
 	if tween.is_active():
 		tween.stop_all()
